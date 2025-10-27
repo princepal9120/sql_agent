@@ -101,7 +101,7 @@ export function generateSQLExplanation(query: string): string {
     const parts: string[] = [];
 
     // Columns
-    if (statement.columns === '*') {
+    if (statement.columns === '*' as any) {
       parts.push('Selecting all columns');
     } else if (Array.isArray(statement.columns)) {
       const columnNames = statement.columns.map((col: any) => {

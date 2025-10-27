@@ -3,7 +3,7 @@
 import { useChat } from '@ai-sdk/react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Database, Menu, X, History, Home, Send, Loader2 } from 'lucide-react';
+import { Database, X, History, Home, Send, Loader2 } from 'lucide-react';
 import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 import { SQLPreview } from '@/components/SQLPreview';
 import { DataTable } from '@/components/DataTable';

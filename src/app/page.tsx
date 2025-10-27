@@ -7,7 +7,6 @@ import {
   BarChart3,
   Brain,
   ArrowRight,
-  CheckCircle2,
   Sparkles,
   TrendingUp,
   Shield,
