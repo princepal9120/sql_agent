@@ -28,7 +28,7 @@ interface ChartRecommendation {
 
 export default function ChatPage() {
   const { messages, sendMessage } = useChat();
-  
+
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -158,7 +158,7 @@ export default function ChatPage() {
             {messages.map((message) => {
               const textPart = message.parts?.find((p: any) => p.type === 'text') as any;
               const content = textPart?.text || '';
-              
+
               return (
                 <div
                   key={message.id}
@@ -166,8 +166,8 @@ export default function ChatPage() {
                 >
                   <div
                     className={`max-w-[80%] rounded-lg px-4 py-3 ${message.role === 'user'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white border border-zinc-200 dark:border-zinc-700'
                       }`}
                   >
                     <p className="text-sm whitespace-pre-wrap">{content}</p>
