@@ -16,8 +16,8 @@ export const metadata: Metadata = {
   title: "SQL Agent - Chat with Your Database",
   description: "Ask natural language questions about your data and get insights.",
   icons: {
-    icon: "/icon_v2.png",
-    apple: "/logo_v2.png",
+    icon: "/icon.png",
+    apple: "/logo.png",
   },
 };
 

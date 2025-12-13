@@ -31,7 +31,7 @@ export default function LandingPage() {
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-sky-600 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-75 transition duration-1000"></div>
               <div className="relative p-1 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <NextImage src="/logo_v2.png" alt="SQL Agent Logo" width={32} height={32} className="w-8 h-8 rounded-md" />
+                <NextImage src="/logo.png" alt="SQL Agent Logo" width={32} height={32} className="w-8 h-8 rounded-md" />
               </div>
             </div>
             <span className="text-xl font-bold text-zinc-900 dark:text-white">
@@ -197,7 +197,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <div className="p-1 bg-white dark:bg-black rounded-lg border border-zinc-200 dark:border-zinc-800">
-              <NextImage src="/logo_v2.png" alt="SQL Agent Logo" width={20} height={20} className="w-5 h-5 rounded-sm" />
+              <NextImage src="/logo.png" alt="SQL Agent Logo" width={20} height={20} className="w-5 h-5 rounded-sm" />
             </div>
             <span className="font-bold text-zinc-900 dark:text-white">SQL Agent</span>
           </div>

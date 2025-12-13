@@ -51,7 +51,7 @@ export default function SetupPage() {
             <header className="relative z-10 px-6 py-4 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-3">
                     <div className="p-1 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                        <NextImage src="/logo_v2.png" alt="SQL Agent Logo" width={32} height={32} className="w-8 h-8 rounded-md" />
+                        <NextImage src="/logo.png" alt="SQL Agent Logo" width={32} height={32} className="w-8 h-8 rounded-md" />
                     </div>
                     <span className="text-xl font-bold text-zinc-900 dark:text-white">
                         SQL Agent
