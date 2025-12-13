@@ -1,172 +1,101 @@
-# 🤖 AI-Powered Data Insights Platform
+# 🤖 SQL Agent - Chat with Your Database
 
-Transform your database queries into insights with natural language! This full-stack application combines Next.js, AI, and smart data visualization to help you understand your data better.
+**Transform your database queries into insights with natural language.**  
+SQL Agent is a full-stack AI-powered analytics platform that helps you understand your data instantly. Connect any SQL database, ask questions in plain English, and get interactive charts, tables, and summaries.
 
-![AI Data Insights Platform](https://img.shields.io/badge/Next.js-15.5-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
-![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-5.0-blue)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-green?logo=openai)
+![Next.js](https://img.shields.io/badge/Next.js-15.0-black?logo=next.js&style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript&style=flat-square)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38bdf8?logo=tailwindcss&style=flat-square)
+![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-4.0-black?logo=vercel&style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 ## ✨ Key Features
 
-### 🧠 AI-Powered Query Generation
+### 🚀 Easy Setup & Connection
+- **Database Wizard**: Connect to **PostgreSQL**, **MySQL**, **SQLite**, or **Turso** in seconds.
+- **Connection Testing**: Validate credentials before saving.
+- **Secure Storage**: Credentials stored locally or via environment variables (self-hosted).
 
-- **Natural Language to SQL**: Ask questions in plain English, get optimized SQL
-- **Multi-step Reasoning**: AI breaks down complex queries automatically
-- **SQL Explanation**: Understand why each query was generated
-- **Smart Error Debugging**: AI suggests corrections when queries fail
-- **Query Validation**: AST-based SQL sanitization prevents injection attacks
+### 🧠 AI-Powered Analysis
+- **Natural Language to SQL**: Ask "Show me top selling products" and get optimized SQL.
+- **Multi-step Reasoning**: complex questions are broken down into logical steps.
+- **Auto-Correction**: AI automatically fixes SQL syntax errors.
 
-### 📊 Smart Data Visualization
+### 📊 Interactive Visualizations
+- **Smart Charting**: Automatically selects Bar, Line, Pie, or Area charts based on data structure.
+- **Dynamic Switching**: Toggle between Chart and Table views instantly.
+- **Follow-up Questions**: AI suggests the next logical questions to ask.
 
-- **Auto Chart Recommendations**: AI analyzes data and suggests best chart type
-- **Multiple Chart Types**: Bar, Line, Pie, Area charts with Recharts
-- **Interactive & Responsive**: Beautiful charts that work on all devices
+### 🎨 Modern UI/UX
+- **Chat Interface**: Familiar ChatGPT-style experience.
+- **Dark Mode**: Beautiful dark theme by default, with easy toggle.
+- **Responsive**: Works perfectly on desktop and mobile.
 
-### 💡 Intelligent Insights
-
-- **AI-Generated Summaries**: Plain English analysis of your data
-- **Trend Detection**: Automatically identify patterns and changes
-- **Anomaly Detection**: Flag unusual data points
-- **Comparison Analysis**: Highlight top/bottom performers
-- **Follow-up Questions**: Smart suggestions for deeper analysis
-
-### 📝 Complete Query Management
-
-- **Query History**: Track all executed queries with full audit trail
-- **Search & Filter**: Find past queries instantly
-- **Performance Metrics**: Execution time, result counts, success rates
-- **One-Click Replay**: Re-run previous queries with a click
-
-### 🎨 Modern Dashboard UI
-
-- **Professional Layout**: Chat, SQL preview, data table, charts, insights
-- **Dark Mode**: System-aware theme with manual toggle
-- **Real-time Streaming**: See AI responses as they generate
-- **Mobile Responsive**: Full functionality on phone, tablet, desktop
+---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
 - Node.js 18+ and pnpm
-- OpenAI API key
-- Turso database account (or use local SQLite)
+- OpenAI API Key
+- A database (PostgreSQL, MySQL, SQLite, or Turso)
 
-### Installation
-
+### 1. Clone & Install
 ```bash
-# Clone and install
-git clone https://github.com/yourusername/sql-agent.git
-cd sql-agent
+git clone https://github.com/princepal9120/sql_agent.git
+cd sql_agent
 pnpm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your credentials:
-# TURSO_DATABASE_URL, TURSO_AUTH_TOKEN, OPENAI_API_KEY
-
-# Run migrations
-pnpm db:generate
-pnpm db:migrate
-
-# Optional: Seed database
-pnpm tsx src/db/db.seed.ts
-
-# Start development server
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your app!
+### 2. Configure Environment
+Create a `.env.local` file:
+```env
+OPENAI_API_KEY=sk-your-key-here
 
-## 🎯 Try These Sample Queries
-
-- "Show me all products"
-- "What are the top 5 best-selling products?"
-- "Analyze sales by region over the last month"
-- "Which product category has the lowest stock?"
-- "Compare revenue between North and South regions"
-
-## 🏗️ Tech Stack
-
-- **Frontend**: Next.js 15, TypeScript, Tailwind CSS, Lucide Icons
-- **AI**: Vercel AI SDK, OpenAI GPT-4
-- **Database**: Turso/LibSQL, Drizzle ORM
-- **Visualization**: Recharts
-- **Security**: node-sql-parser for SQL validation
-
-## 📦 Project Structure
-
-```
-src/
-├── app/
-│   ├── api/chat/route.ts        # Main AI chat endpoint
-│   ├── api/history/route.ts     # Query history API
-│   ├── api/analytics/route.ts   # Analytics & metrics
-│   └── page.tsx                 # Main dashboard
-├── components/                   # React components
-│   ├── ChatPanel.tsx
-│   ├── SQLPreview.tsx
-│   ├── DataTable.tsx
-│   ├── ChartView.tsx
-│   ├── InsightSummary.tsx
-│   ├── QueryHistory.tsx
-│   └── ThemeSwitcher.tsx
-├── db/                          # Database
-│   ├── schema.ts
-│   ├── db.ts
-│   └── migrations/
-└── lib/                         # Utilities
-    ├── sqlValidator.ts          # SQL security & validation
-    ├── chartRecommender.ts      # AI chart selection
-    └── insightGenerator.ts      # AI insight generation
+# Optional: Pre-configure a default database (Turso example)
+TURSO_DATABASE_URL=libsql://your-db.turso.io
+TURSO_AUTH_TOKEN=your-token
 ```
 
-## 🚢 Deploy to Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
+### 3. Run Development Server
 ```bash
-vercel
-vercel env add TURSO_DATABASE_URL
-vercel env add TURSO_AUTH_TOKEN
-vercel env add OPENAI_API_KEY
-vercel --prod
+pnpm dev
+# Opens at http://localhost:3000
 ```
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-## 🔒 Security
-
-- ✅ SQL injection prevention via AST parsing
-- ✅ Read-only queries (SELECT only enforced)
-- ✅ Query sanitization and validation
-- ✅ Comprehensive audit logging
-- ✅ Environment variable protection
-
-## 📚 Learn More
-
-- [Deployment Guide](./DEPLOYMENT.md) - Complete deployment instructions
-- [Vercel AI SDK](https://sdk.vercel.ai/) - AI integration framework
-- [Drizzle ORM](https://orm.drizzle.team/) - Database toolkit
-- [Next.js Documentation](https://nextjs.org/docs) - Framework docs
-
-## 🤝 Contributing
-
-Contributions welcome! Feel free to open issues or submit pull requests.
-
-## 📝 License
-
-MIT License - use freely for personal or commercial projects.
+### 4. Connect Your Database
+Visit `http://localhost:3000/setup` to use the connection wizard, or go straight to `/chat` if you configured `.env.local`.
 
 ---
 
-**Built with ❤️ using Next.js, TypeScript, and AI**
+## 🏗️ Architecture
 
-⭐ Star this repo if you find it useful!
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS v4, Lucide Icons
+- **AI**: Vercel AI SDK, OpenAI GPT-4o
+- **Database Access**: Drizzle ORM, `node-sql-parser` for validation
+- **Visualization**: Recharts, customized Shadcn/ui components
 
-## Deploy on Vercel
+## 📦 Project Structure
+```
+src/
+├── app/
+│   ├── api/             # API Routes (Chat, Database Config)
+│   ├── chat/            # Chat Interface Page
+│   ├── setup/           # Connection Wizard Page
+│   └── page.tsx         # Landing Page
+├── components/          # Reusable UI Components
+│   ├── ChartView.tsx    # Visualization Engine
+│   └── DatabaseWizard.tsx # Connection Flow
+├── lib/                 # Utilities & AI Logic
+│   ├── db-adapter.ts    # Dynamic DB Connection Handler
+│   └── chartRecommender.ts # Visualization Logic
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 License
+This project is licensed under the MIT License.
+
+---
+**Built with ❤️ using Next.js & AI**
