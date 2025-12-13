@@ -27,6 +27,15 @@ export function recommendChartType(
   const categoricalColumns = columnTypes.filter((c) => c.type === 'categorical');
   const dateColumns = columnTypes.filter((c) => c.type === 'date');
 
+  // Check for high dimensionality or text-heavy data
+  const textColumns = columnTypes.filter(c => c.type === 'categorical' || c.type === 'unknown');
+  if (textColumns.length > 2 && numericColumns.length < 2) {
+    return {
+      type: 'table',
+      reason: 'Text-rich data - table view is best for detailed records',
+    };
+  }
+
   // Case 1: Time series data (date + numeric)
   if (dateColumns.length > 0 && numericColumns.length > 0) {
     return {
@@ -39,8 +48,9 @@ export function recommendChartType(
 
   // Case 2: Single categorical + numeric (good for bar/pie)
   if (categoricalColumns.length === 1 && numericColumns.length >= 1) {
-    // Use pie chart if data count is small (< 8) and represents parts of a whole
-    if (data.length <= 7) {
+    // Top X lists with names usually look better as bar charts, but if there are too many unique values, maybe table?
+    // Let's stick to Bar for now but ensure Pie is only for very small sets
+    if (data.length <= 5) {
       return {
         type: 'pie',
         reason: 'Small categorical dataset - pie chart shows proportions',
@@ -57,7 +67,7 @@ export function recommendChartType(
   }
 
   // Case 3: Multiple numeric columns (comparison)
-  if (numericColumns.length >= 2) {
+  if (numericColumns.length >= 2 && textColumns.length <= 1) {
     return {
       type: 'bar',
       reason: 'Multiple numeric values - bar chart compares metrics',
@@ -80,11 +90,11 @@ export function recommendChartType(
   }
 
   // Case 5: Large dataset (> 20 rows) with numeric - use area for trends
-  if (data.length > 20 && numericColumns.length > 0) {
+  if (data.length > 20 && numericColumns.length > 0 && dateColumns.length > 0) {
     return {
       type: 'area',
-      reason: 'Large dataset - area chart shows overall trends',
-      xAxis: columns[0],
+      reason: 'Large time-series dataset - area chart shows overall trends',
+      xAxis: dateColumns[0].name,
       yAxis: numericColumns[0].name,
     };
   }
@@ -104,7 +114,7 @@ interface ColumnTypeInfo {
 function analyzeColumnTypes(data: any[], columns: string[]): ColumnTypeInfo[] {
   return columns.map((col) => {
     const values = data.map((row) => row[col]).filter((v) => v != null);
-    
+
     if (values.length === 0) {
       return { name: col, type: 'unknown' };
     }
@@ -127,8 +137,8 @@ function analyzeColumnTypes(data: any[], columns: string[]): ColumnTypeInfo[] {
     }
 
     // Check if boolean
-    const boolValues = values.filter((v) => 
-      v === true || v === false || v === 0 || v === 1 || 
+    const boolValues = values.filter((v) =>
+      v === true || v === false || v === 0 || v === 1 ||
       (typeof v === 'string' && /^(true|false|yes|no)$/i.test(v))
     );
     if (boolValues.length / values.length > 0.8) {
