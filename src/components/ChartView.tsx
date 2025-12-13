@@ -136,7 +136,7 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
                                 cx="50%"
                                 cy="50%"
                                 outerRadius={100}
-                                label={(entry) => `${entry[xKey]}: ${entry[yKey]}`}
+                                label={(entry: any) => `${entry[xKey]}: ${entry[yKey]}`}
                             >
                                 {data.map((_, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
