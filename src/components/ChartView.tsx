@@ -17,7 +17,17 @@ import {
     ResponsiveContainer,
     Cell,
 } from 'recharts';
-import { BarChart3, TrendingUp, Info } from 'lucide-react';
+import {
+    BarChart3,
+    TrendingUp,
+    Info,
+    PieChart as PieIcon,
+    LineChart as LineIcon,
+    AreaChart as AreaIcon,
+    Table as TableIcon
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { DataTable } from './DataTable';
 
 interface ChartViewProps {
     data: any[];
@@ -42,7 +52,17 @@ const COLORS = [
     '#f97316', // orange
 ];
 
+type ChartType = 'bar' | 'line' | 'pie' | 'area' | 'table';
+
 export function ChartView({ data, columns, chartType = 'bar', recommendation }: ChartViewProps) {
+    const [activeType, setActiveType] = useState<ChartType>(recommendation?.type || chartType);
+
+    useEffect(() => {
+        if (recommendation?.type) {
+            setActiveType(recommendation.type);
+        }
+    }, [recommendation]);
+
     if (!data || data.length === 0) {
         return (
             <div className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 p-12">
@@ -63,27 +83,34 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
     const yKey = recommendation?.yAxis || columns[1];
 
     const renderChart = () => {
-        const effectiveChartType = recommendation?.type || chartType;
+        switch (activeType) {
+            case 'table':
+                return (
+                    <div className="h-full overflow-auto">
+                        <DataTable data={data} columns={columns} />
+                    </div>
+                );
 
-        switch (effectiveChartType) {
             case 'line':
                 return (
                     <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={data}>
+                        <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
                             <XAxis
                                 dataKey={xKey}
                                 className="text-xs fill-zinc-600 dark:fill-zinc-400"
+                                tick={{ fontSize: 12 }}
                             />
-                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" />
+                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" tick={{ fontSize: 12 }} />
                             <Tooltip
                                 contentStyle={{
                                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
                                     border: '1px solid #e5e7eb',
                                     borderRadius: '8px',
+                                    fontSize: '12px'
                                 }}
                             />
-                            <Legend />
+                            <Legend wrapperStyle={{ fontSize: '12px' }} />
                             <Line
                                 type="monotone"
                                 dataKey={yKey}
@@ -99,21 +126,23 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
             case 'area':
                 return (
                     <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={data}>
+                        <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
                             <XAxis
                                 dataKey={xKey}
                                 className="text-xs fill-zinc-600 dark:fill-zinc-400"
+                                tick={{ fontSize: 12 }}
                             />
-                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" />
+                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" tick={{ fontSize: 12 }} />
                             <Tooltip
                                 contentStyle={{
                                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
                                     border: '1px solid #e5e7eb',
                                     borderRadius: '8px',
+                                    fontSize: '12px'
                                 }}
                             />
-                            <Legend />
+                            <Legend wrapperStyle={{ fontSize: '12px' }} />
                             <Area
                                 type="monotone"
                                 dataKey={yKey}
@@ -135,15 +164,23 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
                                 nameKey={xKey}
                                 cx="50%"
                                 cy="50%"
-                                outerRadius={100}
+                                outerRadius={80}
                                 label={(entry: any) => `${entry[xKey]}: ${entry[yKey]}`}
+                                labelLine={{ stroke: '#9ca3af', strokeWidth: 1 }}
                             >
                                 {data.map((_, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
-                            <Tooltip />
-                            <Legend />
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                    border: '1px solid #e5e7eb',
+                                    borderRadius: '8px',
+                                    fontSize: '12px'
+                                }}
+                            />
+                            <Legend wrapperStyle={{ fontSize: '12px' }} />
                         </PieChart>
                     </ResponsiveContainer>
                 );
@@ -152,22 +189,24 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
             default:
                 return (
                     <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={data}>
+                        <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-zinc-200 dark:stroke-zinc-700" />
                             <XAxis
                                 dataKey={xKey}
                                 className="text-xs fill-zinc-600 dark:fill-zinc-400"
+                                tick={{ fontSize: 12 }}
                             />
-                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" />
+                            <YAxis className="text-xs fill-zinc-600 dark:fill-zinc-400" tick={{ fontSize: 12 }} />
                             <Tooltip
                                 contentStyle={{
                                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
                                     border: '1px solid #e5e7eb',
                                     borderRadius: '8px',
+                                    fontSize: '12px'
                                 }}
                             />
-                            <Legend />
-                            <Bar dataKey={yKey} fill="#3b82f6" radius={[8, 8, 0, 0]} />
+                            <Legend wrapperStyle={{ fontSize: '12px' }} />
+                            <Bar dataKey={yKey} fill="#3b82f6" radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 );
@@ -175,25 +214,53 @@ export function ChartView({ data, columns, chartType = 'bar', recommendation }: 
     };
 
     return (
-        <div className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm">
             {/* Header */}
-            <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
-                <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="w-5 h-5 text-blue-500" />
-                    <h3 className="font-semibold text-zinc-900 dark:text-white">
-                        Visualization
-                    </h3>
-                </div>
-                {recommendation && (
-                    <div className="flex items-start gap-2 text-sm text-zinc-600 dark:text-zinc-400 bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                        <Info className="w-4 h-4 flex-shrink-0 mt-0.5 text-blue-500" />
-                        <span>{recommendation.reason}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/50">
+                <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                        <TrendingUp className="w-5 h-5 text-blue-500" />
+                        <h3 className="font-semibold text-zinc-900 dark:text-white">
+                            Visualization
+                        </h3>
                     </div>
-                )}
+                    {recommendation && (
+                        <div className="flex items-start gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                            <Info className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                            <span>{recommendation.reason}</span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Chart Type Selector */}
+                <div className="flex items-center gap-1 p-1 bg-zinc-200 dark:bg-zinc-700 rounded-lg self-start sm:self-auto">
+                    {[
+                        { type: 'bar', icon: BarChart3, label: 'Bar' },
+                        { type: 'line', icon: LineIcon, label: 'Line' },
+                        { type: 'area', icon: AreaIcon, label: 'Area' },
+                        { type: 'pie', icon: PieIcon, label: 'Pie' },
+                        { type: 'table', icon: TableIcon, label: 'Table' },
+                    ].map((item) => (
+                        <button
+                            key={item.type}
+                            onClick={() => setActiveType(item.type as ChartType)}
+                            className={`
+                                p-1.5 rounded-md transition-all
+                                ${activeType === item.type
+                                    ? 'bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-300/50 dark:hover:bg-zinc-600/50'
+                                }
+                            `}
+                            title={item.label}
+                        >
+                            <item.icon className="w-4 h-4" />
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Chart */}
-            <div className="p-6" style={{ height: '400px' }}>
+            <div className={`p-4 ${activeType === 'table' ? '' : 'h-[400px]'}`}>
                 {renderChart()}
             </div>
         </div>

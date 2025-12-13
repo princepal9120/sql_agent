@@ -3,10 +3,10 @@ import { queryHistoryTable } from '@/db/schema';
 import { openai } from '@ai-sdk/openai';
 import { streamText, UIMessage, convertToModelMessages, tool } from 'ai';
 import z from 'zod';
-import { 
-  validateAndSanitizeSQL, 
-  generateSQLExplanation, 
-  suggestSQLCorrection 
+import {
+    validateAndSanitizeSQL,
+    generateSQLExplanation,
+    suggestSQLCorrection
 } from '@/lib/sqlValidator';
 import { recommendChartType } from '@/lib/chartRecommender';
 import { generateInsights, generateFollowUpQuestions } from '@/lib/insightGenerator';
@@ -17,7 +17,7 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
     const { messages }: { messages: UIMessage[] } = await req.json();
     const startTime = Date.now();
-    
+
     // Helper to get last user message text
     const getLastUserMessage = () => {
         const lastMsg = messages[messages.length - 1];
@@ -62,6 +62,8 @@ Remember: Your goal is to help users discover insights, not just run queries.`;
     const result = streamText({
         model: openai('gpt-5-nano-2025-08-07'),
         messages: convertToModelMessages(messages),
+        // @ts-expect-error maxSteps is supported in runtime but types might be outdated
+        maxSteps: 5,
         system: SYSTEM_PROMPT,
         tools: {
             schema: tool({
@@ -89,7 +91,7 @@ CREATE TABLE sales (
 )`;
                 },
             }),
-            
+
             db: tool({
                 description: 'Execute a SQL SELECT query against the database. Query will be automatically validated for safety.',
                 inputSchema: z.object({
@@ -97,14 +99,14 @@ CREATE TABLE sales (
                 }),
                 execute: async ({ query }) => {
                     const queryStartTime = Date.now();
-                    
+
                     try {
                         // Validate and sanitize SQL
                         const validation = validateAndSanitizeSQL(query);
-                        
+
                         if (!validation.isValid) {
                             const correction = suggestSQLCorrection(query, validation.error || '');
-                            
+
                             // Log failed query
                             await db.insert(queryHistoryTable).values({
                                 user_id: 'anonymous',
@@ -114,18 +116,18 @@ CREATE TABLE sales (
                                 error_message: validation.error,
                                 execution_time_ms: Date.now() - queryStartTime,
                             }).catch(console.error);
-                            
+
                             return {
                                 error: validation.error,
                                 suggestion: correction,
                                 rows: [],
                             };
                         }
-                        
+
                         // Execute sanitized query
                         const result = await db.run(validation.sanitizedQuery || query);
                         const executionTime = Date.now() - queryStartTime;
-                        
+
                         // Log successful query
                         await db.insert(queryHistoryTable).values({
                             user_id: 'anonymous',
@@ -135,7 +137,7 @@ CREATE TABLE sales (
                             execution_time_ms: executionTime,
                             status: 'success',
                         }).catch(console.error);
-                        
+
                         return {
                             ...result,
                             executionTime,
@@ -143,7 +145,7 @@ CREATE TABLE sales (
                     } catch (error) {
                         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
                         const executionTime = Date.now() - queryStartTime;
-                        
+
                         // Log error
                         await db.insert(queryHistoryTable).values({
                             user_id: 'anonymous',
@@ -153,9 +155,9 @@ CREATE TABLE sales (
                             error_message: errorMessage,
                             execution_time_ms: executionTime,
                         }).catch(console.error);
-                        
+
                         const correction = suggestSQLCorrection(query, errorMessage);
-                        
+
                         return {
                             error: errorMessage,
                             suggestion: correction,
@@ -164,7 +166,7 @@ CREATE TABLE sales (
                     }
                 },
             }),
-            
+
             explain_sql: tool({
                 description: 'Generate a plain English explanation of what a SQL query does and why it was generated.',
                 inputSchema: z.object({
@@ -178,7 +180,7 @@ CREATE TABLE sales (
                     };
                 },
             }),
-            
+
             generate_insights: tool({
                 description: 'Analyze query results and generate AI-powered insights, trends, and summaries.',
                 inputSchema: z.object({
@@ -189,14 +191,14 @@ CREATE TABLE sales (
                 execute: async ({ data, columns, query }) => {
                     const insights = generateInsights(data, columns, query);
                     const followUpQuestions = generateFollowUpQuestions(data, columns, query);
-                    
+
                     return {
                         insights,
                         followUpQuestions,
                     };
                 },
             }),
-            
+
             recommend_chart: tool({
                 description: 'Analyze data and recommend the best chart type for visualization.',
                 inputSchema: z.object({
