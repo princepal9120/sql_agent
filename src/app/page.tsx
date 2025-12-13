@@ -87,13 +87,14 @@ export default function LandingPage() {
             Ask questions in plain English, get instant SQL, visualizations, and actionable insights.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <Link
-              href="/chat"
+              href="/setup"
               className="group relative px-8 py-4 bg-gradient-to-r from-sky-600 to-indigo-600 text-white rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-sky-500/25 overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
-                Start Free Trial
+                <Database className="w-5 h-5" />
+                Connect Your Database
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-sky-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -103,8 +104,31 @@ export default function LandingPage() {
               className="group px-8 py-4 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-900 dark:text-white rounded-xl font-semibold transition-all hover:scale-105 active:scale-95 border-2 border-zinc-200 dark:border-zinc-700 flex items-center gap-2"
             >
               <MessageSquare className="w-5 h-5" />
-              See Demo
+              Try Demo
             </Link>
+          </div>
+
+          {/* Supported Databases */}
+          <div className="flex items-center justify-center gap-6 mb-12 flex-wrap">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Works with:</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <span className="text-xl">🐘</span>
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">PostgreSQL</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <span className="text-xl">🐬</span>
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">MySQL</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <span className="text-xl">📦</span>
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">SQLite</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                <span className="text-xl">🚀</span>
+                <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Turso</span>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-zinc-500 dark:text-zinc-400">
