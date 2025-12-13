@@ -133,7 +133,7 @@ export default function ChatPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-zinc-900 dark:text-white">
-                  AI Data Insights
+                  Sql Agentsights
                 </h1>
                 <p className="text-sm text-zinc-500">Chat with your data</p>
               </div>
